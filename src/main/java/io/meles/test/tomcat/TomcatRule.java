@@ -82,7 +82,9 @@ public class TomcatRule implements TestRule {
 
     private Tomcat startTomcat() throws LifecycleException, ServletException {
         final Tomcat startingTomcat = new Tomcat();
+        startingTomcat.setBaseDir(System.getProperty("java.io.tmpdir") + "/tomcat." + configuredPort);
         startingTomcat.setPort(configuredPort);
+
         for (final WebappBuilder webapp : webappBuilders) {
             startingTomcat.addWebapp(webapp.getContextPath(), webapp.getContextRootFilePath());
         }
