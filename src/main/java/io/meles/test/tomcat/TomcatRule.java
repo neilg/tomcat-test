@@ -44,10 +44,14 @@ public class TomcatRule implements TestRule {
         startingTomcat.getEngine();
         startingTomcat.start();
         final Connector connector = startingTomcat.getConnector();
-        if (!LifecycleState.STARTED.equals(connector.getState())) {
+        if (connector.getState() != LifecycleState.STARTED) {
             throw new RuntimeException("failed to start tomcat connector on port " + configuredPort);
         }
         return startingTomcat;
+    }
+
+    Tomcat getTomcat() {
+        return tomcat;
     }
 
     private void cleanup() throws LifecycleException {
