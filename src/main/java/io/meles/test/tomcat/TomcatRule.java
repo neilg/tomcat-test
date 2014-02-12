@@ -1,5 +1,9 @@
 package io.meles.test.tomcat;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.ServletException;
+
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;
@@ -13,6 +17,8 @@ public class TomcatRule implements TestRule {
     private final int configuredPort;
 
     private Tomcat tomcat;
+
+    private List<Webapp> webapps = new ArrayList<>();
 
     public TomcatRule(int port) {
         this.configuredPort = port;
@@ -38,9 +44,12 @@ public class TomcatRule implements TestRule {
         return tomcat.getConnector().getLocalPort();
     }
 
-    private Tomcat startTomcat() throws LifecycleException {
+    private Tomcat startTomcat() throws LifecycleException, ServletException {
         final Tomcat startingTomcat = new Tomcat();
         startingTomcat.setPort(configuredPort);
+        for (final Webapp webapp : webapps) {
+            startingTomcat.addWebapp(webapp.path, webapp.root);
+        }
         startingTomcat.getEngine();
         startingTomcat.start();
         final Connector connector = startingTomcat.getConnector();
@@ -63,6 +72,22 @@ public class TomcatRule implements TestRule {
             } finally {
                 stoppingTomcat.destroy();
             }
+        }
+    }
+
+    public TomcatRule addWebapp(final String webappRoot, final String contextPath) {
+        webapps.add(new Webapp(webappRoot, contextPath));
+        return this;
+    }
+
+    private class Webapp {
+
+        final String root;
+        final String path;
+
+        private Webapp(String root, String path) {
+            this.root = root;
+            this.path = path;
         }
     }
 }
