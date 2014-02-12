@@ -18,6 +18,8 @@
 
 package io.meles.test.tomcat;
 
+import static io.meles.test.tomcat.TomcatRule.withTomcat;
+import static io.meles.test.tomcat.WebappBuilder.webapp;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
@@ -33,6 +35,8 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 public class TomcatRuleTest {
+
+    private static final String WEBAPP_ROOT = TomcatRuleTest.class.getResource("/a_webapp").getFile();
 
     @Test
     public void canBindToFreePort() throws Throwable {
@@ -88,8 +92,10 @@ public class TomcatRuleTest {
     @Test
     public void canRunWebappFromFilesystem() throws Throwable {
 
-        final TomcatRule ruleUnderTest = new TomcatRule(0);
-        ruleUnderTest.addWebapp(getClass().getResource("/a_webapp").getFile(), "/");
+        final TomcatRule ruleUnderTest =
+                withTomcat()
+                        .run(webapp(WEBAPP_ROOT).at("/"))
+                        .onFreePort();
 
         final Statement base = new Statement() {
             @Override

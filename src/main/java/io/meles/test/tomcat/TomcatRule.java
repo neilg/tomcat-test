@@ -32,11 +32,29 @@ import org.junit.runners.model.Statement;
 
 public class TomcatRule implements TestRule {
 
-    private final int configuredPort;
+    public static TomcatRule withTomcat() {
+        return new TomcatRule(0);
+    }
+
+    public TomcatRule run(final WebappBuilder webapp) {
+        webappBuilders.add(webapp);
+        return this;
+    }
+
+    public TomcatRule onFreePort() {
+        return onPort(0);
+    }
+
+    public TomcatRule onPort(final int port) {
+        this.configuredPort = port;
+        return this;
+    }
+
+    private List<WebappBuilder> webappBuilders = new ArrayList<>();
+
+    private int configuredPort;
 
     private Tomcat tomcat;
-
-    private List<Webapp> webapps = new ArrayList<>();
 
     public TomcatRule(int port) {
         this.configuredPort = port;
@@ -65,8 +83,8 @@ public class TomcatRule implements TestRule {
     private Tomcat startTomcat() throws LifecycleException, ServletException {
         final Tomcat startingTomcat = new Tomcat();
         startingTomcat.setPort(configuredPort);
-        for (final Webapp webapp : webapps) {
-            startingTomcat.addWebapp(webapp.path, webapp.root);
+        for (final WebappBuilder webapp : webappBuilders) {
+            startingTomcat.addWebapp(webapp.getContextPath(), webapp.getContextRootFilePath());
         }
         startingTomcat.getEngine();
         startingTomcat.start();
@@ -93,19 +111,4 @@ public class TomcatRule implements TestRule {
         }
     }
 
-    public TomcatRule addWebapp(final String webappRoot, final String contextPath) {
-        webapps.add(new Webapp(webappRoot, contextPath));
-        return this;
-    }
-
-    private class Webapp {
-
-        final String root;
-        final String path;
-
-        private Webapp(String root, String path) {
-            this.root = root;
-            this.path = path;
-        }
-    }
 }
