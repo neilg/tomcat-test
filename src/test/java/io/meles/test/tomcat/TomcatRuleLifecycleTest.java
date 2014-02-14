@@ -33,18 +33,18 @@ public class TomcatRuleLifecycleTest {
     public void tomcatIsDestroyedAfterEvaluation() throws Throwable {
         final TomcatRule ruleUnderTest = new TomcatRule(0);
 
-        final Tomcat[] tomcats = new Tomcat[1];
+        final Tomcat[] tomcat = new Tomcat[1];
 
         final Statement base = new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                tomcats[0] = ruleUnderTest.getTomcat();
+                tomcat[0] = ruleUnderTest.getTomcat();
             }
         };
         final Statement statement = ruleUnderTest.apply(base, Description.EMPTY);
         statement.evaluate();
 
-        assertThat(tomcats[0].getServer().getState(), is(LifecycleState.DESTROYED));
+        assertThat(tomcat[0].getServer().getState(), is(LifecycleState.DESTROYED));
     }
 
 }

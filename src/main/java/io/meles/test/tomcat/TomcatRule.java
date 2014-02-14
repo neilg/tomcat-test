@@ -20,6 +20,7 @@ package io.meles.test.tomcat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.servlet.ServletException;
 
 import org.apache.catalina.LifecycleException;
@@ -65,7 +66,7 @@ public class TomcatRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                tomcat = startTomcat();
+                tomcat = startTomcat(description);
                 try {
                     base.evaluate();
                 } finally {
@@ -80,9 +81,10 @@ public class TomcatRule implements TestRule {
         return tomcat.getConnector().getLocalPort();
     }
 
-    private Tomcat startTomcat() throws LifecycleException, ServletException {
+    private Tomcat startTomcat(final Description description) throws LifecycleException, ServletException {
         final Tomcat startingTomcat = new Tomcat();
-        startingTomcat.setBaseDir(System.getProperty("java.io.tmpdir") + "/tomcat." + configuredPort);
+        final String basedir = System.getProperty("java.io.tmpdir") + "/tomcat." + configuredPort + "-" + description.getDisplayName() + "-" + UUID.randomUUID();
+        startingTomcat.setBaseDir(basedir);
         startingTomcat.setPort(configuredPort);
 
         for (final WebappBuilder webapp : webappBuilders) {
