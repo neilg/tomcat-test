@@ -35,6 +35,7 @@ public class TomcatRuleWebappTest {
 
     private static final String VALID_WEBAPP_ROOT = TomcatRuleWebappTest.class.getResource("/valid_webapp").getFile();
     private static final String INVALID_WEBAPP_ROOT = TomcatRuleWebappTest.class.getResource("/webapp_with_invalid_web_xml").getFile();
+    private static final String WAR_WEBAPP_ROOT = TomcatRuleWebappTest.class.getResource("/the.war").getFile();
 
     @Test
     public void canRunWebappFromFilesystem() throws Throwable {
@@ -76,6 +77,32 @@ public class TomcatRuleWebappTest {
                 int tomcatPort = ruleUnderTest.getLocalPort();
                 final HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:" + tomcatPort + "/index.jsp").openConnection();
                 assertThat(connection.getResponseCode(), is(404));
+            }
+        };
+        final Statement statement = ruleUnderTest.apply(base, Description.EMPTY);
+        statement.evaluate();
+    }
+
+    @Test
+    public void canRunWebappFromWar() throws Throwable {
+
+        final TomcatRule ruleUnderTest =
+                withTomcat()
+                        .run(webapp(WAR_WEBAPP_ROOT).at("/"))
+                        .onFreePort();
+
+        final Statement base = new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                int tomcatPort = ruleUnderTest.getLocalPort();
+                final HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:" + tomcatPort + "/index.jsp").openConnection();
+                final InputStreamReader in = new InputStreamReader(connection.getInputStream());
+                final StringBuilder body = new StringBuilder();
+                final char[] buffer = new char[512];
+                for (int charsRead = in.read(buffer); charsRead != -1; charsRead = in.read(buffer)) {
+                    body.append(buffer, 0, charsRead);
+                }
+                assertThat(body.toString(), is("This is the webapp"));
             }
         };
         final Statement statement = ruleUnderTest.apply(base, Description.EMPTY);
