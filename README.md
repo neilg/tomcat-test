@@ -23,7 +23,7 @@ If you want to use JSPs you also need
 Then in your test classes
 
     import static io.meles.test.tomcat.TomcatRule.*
-    import static io.meles.test.tomcat.WebappBuilder.*
+    import static io.meles.test.tomcat.builder.WebappBuilder.*
 
     import io.meles.test.tomcat.TomcatRule;
 

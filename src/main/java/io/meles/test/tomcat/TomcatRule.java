@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
 
+import io.meles.test.tomcat.builder.WebappBuilder;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;
@@ -88,7 +89,7 @@ public class TomcatRule implements TestRule {
         startingTomcat.setPort(configuredPort);
 
         for (final WebappBuilder webapp : webappBuilders) {
-            startingTomcat.addWebapp(webapp.getContextPath(), webapp.getContextRootFilePath());
+            startingTomcat.addWebapp(webapp.getContextPath(), webapp.getBase());
         }
         startingTomcat.getEngine();
         startingTomcat.start();

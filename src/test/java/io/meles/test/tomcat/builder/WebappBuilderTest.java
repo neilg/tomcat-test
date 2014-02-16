@@ -16,29 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.meles.test.tomcat;
+package io.meles.test.tomcat.builder;
 
-public class WebappBuilder {
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.junit.Assert.assertThat;
 
-    private String contextRootFilePath;
-    private String contextPath;
+import org.junit.Test;
 
-    public static WebappBuilder webapp(final String contextRootFilePath) {
-        final WebappBuilder webappBuilder = new WebappBuilder();
-        webappBuilder.contextRootFilePath = contextRootFilePath;
-        return webappBuilder;
+public class WebappBuilderTest {
+
+    @Test
+    public void shouldUseWebappBase() {
+        final WebappBuilder webappBuilderUnderTest = WebappBuilder.webapp("the/location");
+
+        assertThat(webappBuilderUnderTest.build(), hasProperty("base", equalTo("the/location")));
     }
 
-    public WebappBuilder at(final String contextPath) {
-        this.contextPath = contextPath;
-        return this;
-    }
+    @Test
+    public void shouldUseContextPath() {
+        final WebappBuilder webappBuilderUnderTest = WebappBuilder.webapp("the/location").at("/the/path");
 
-    public String getContextRootFilePath() {
-        return contextRootFilePath;
-    }
-
-    public String getContextPath() {
-        return contextPath;
+        assertThat(webappBuilderUnderTest.build(), hasProperty("contextPath", equalTo("/the/path")));
     }
 }
