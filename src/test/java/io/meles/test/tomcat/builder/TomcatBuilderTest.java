@@ -30,9 +30,10 @@ public class TomcatBuilderTest {
 
     @Test
     public void shouldUsePort() throws ServletException {
-        final TomcatBuilder builderUnderTest = new TomcatBuilder();
-        builderUnderTest.onPort(9876);
-        final Tomcat tomcat = builderUnderTest.build();
+        final Tomcat tomcat = TomcatBuilder
+                .withTomcat()
+                .onPort(9876)
+                .build();
         assertThat(tomcat.getConnector().getPort(), is(9876));
     }
 }

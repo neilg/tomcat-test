@@ -19,6 +19,7 @@
 package io.meles.test.tomcat.builder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.ServletException;
 
@@ -28,21 +29,24 @@ public class TomcatBuilder {
 
     public static final int DEFAULT_HTTP_PORT = 8080;
 
-    private int port = DEFAULT_HTTP_PORT;
-
-    private List<Webapp> webapps = new ArrayList<>();
+    private final int port;
+    private final List<Webapp> webapps;
 
     public static TomcatBuilder builder() {
-        return new TomcatBuilder();
+        return new TomcatBuilder(DEFAULT_HTTP_PORT, Collections.<Webapp>emptyList());
     }
 
     public static TomcatBuilder withTomcat() {
         return builder();
     }
 
-    public TomcatBuilder onPort(final int port) {
+    private TomcatBuilder(final int port, final List<Webapp> webapps) {
         this.port = port;
-        return this;
+        this.webapps = webapps;
+    }
+
+    public TomcatBuilder onPort(final int port) {
+        return new TomcatBuilder(port, webapps);
     }
 
     public TomcatBuilder run(final WebappBuilder webappBuilder) {
@@ -50,8 +54,9 @@ public class TomcatBuilder {
     }
 
     public TomcatBuilder run(final Webapp webapp) {
-        webapps.add(webapp);
-        return this;
+        final List<Webapp> newWebapps = new ArrayList<>(webapps);
+        newWebapps.add(webapp);
+        return new TomcatBuilder(port, newWebapps);
     }
 
     public Tomcat build() throws ServletException {
