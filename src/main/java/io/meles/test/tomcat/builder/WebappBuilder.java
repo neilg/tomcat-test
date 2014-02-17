@@ -20,18 +20,20 @@ package io.meles.test.tomcat.builder;
 
 public class WebappBuilder {
 
-    private String contextPath;
-    private String base;
+    private final String contextPath;
+    private final String base;
 
     public static WebappBuilder webapp(final String base) {
-        final WebappBuilder webappBuilder = new WebappBuilder();
-        webappBuilder.base = base;
-        return webappBuilder;
+        return new WebappBuilder(null, base);
+    }
+
+    private WebappBuilder(final String contextPath, final String base) {
+        this.contextPath = contextPath;
+        this.base = base;
     }
 
     public WebappBuilder at(final String contextPath) {
-        this.contextPath = contextPath;
-        return this;
+        return new WebappBuilder(contextPath, base);
     }
 
     public String getBase() {
