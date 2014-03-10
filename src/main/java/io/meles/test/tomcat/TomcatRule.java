@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
 
-import io.meles.test.tomcat.builder.WebappBuilder;
+import io.meles.test.tomcat.config.WebappBuilder;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;

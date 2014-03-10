@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.meles.test.tomcat.builder;
+package io.meles.test.tomcat.config;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,17 +30,17 @@ public class TomcatBuilder {
     public static final int DEFAULT_HTTP_PORT = 8080;
 
     private final int port;
-    private final List<Webapp> webapps;
+    private final List<WebappBuilder> webapps;
 
     public static TomcatBuilder builder() {
-        return new TomcatBuilder(DEFAULT_HTTP_PORT, Collections.<Webapp>emptyList());
+        return new TomcatBuilder(DEFAULT_HTTP_PORT, Collections.<WebappBuilder>emptyList());
     }
 
     public static TomcatBuilder withTomcat() {
         return builder();
     }
 
-    private TomcatBuilder(final int port, final List<Webapp> webapps) {
+    private TomcatBuilder(final int port, final List<WebappBuilder> webapps) {
         this.port = port;
         this.webapps = webapps;
     }
@@ -49,12 +49,8 @@ public class TomcatBuilder {
         return new TomcatBuilder(port, webapps);
     }
 
-    public TomcatBuilder run(final WebappBuilder webappBuilder) {
-        return run(webappBuilder.build());
-    }
-
-    public TomcatBuilder run(final Webapp webapp) {
-        final List<Webapp> newWebapps = new ArrayList<>(webapps);
+    public TomcatBuilder run(final WebappBuilder webapp) {
+        final List<WebappBuilder> newWebapps = new ArrayList<>(webapps);
         newWebapps.add(webapp);
         return new TomcatBuilder(port, newWebapps);
     }
@@ -62,7 +58,7 @@ public class TomcatBuilder {
     public Tomcat build() throws ServletException {
         final Tomcat tomcat = new Tomcat();
         tomcat.setPort(port);
-        for (final Webapp webapp : webapps) {
+        for (final WebappBuilder webapp : webapps) {
             tomcat.addWebapp(webapp.getContextPath(), webapp.getBase());
         }
         tomcat.getEngine();

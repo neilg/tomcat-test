@@ -19,7 +19,7 @@
 package io.meles.test.tomcat;
 
 import static io.meles.test.tomcat.TomcatRule.withTomcat;
-import static io.meles.test.tomcat.builder.WebappBuilder.webapp;
+import static io.meles.test.tomcat.config.WebappBuilder.webapp;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.meles.test.tomcat.builder;
+package io.meles.test.tomcat.config;
 
 public class WebappBuilder {
 
@@ -44,7 +44,4 @@ public class WebappBuilder {
         return contextPath;
     }
 
-    public Webapp build() {
-        return new Webapp(contextPath, base);
-    }
 }

@@ -17,13 +17,13 @@ If you want to use JSPs you also need
     <dependency>
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-jasper</artifactId>
-        <version>7.0.50</version>
+        <version>7.0.52</version>
     </dependency>
 
 Then in your test classes
 
     import static io.meles.test.tomcat.TomcatRule.*
-    import static io.meles.test.tomcat.builder.WebappBuilder.*
+    import static io.meles.test.tomcat.config.WebappBuilder.*
 
     import io.meles.test.tomcat.TomcatRule;
 

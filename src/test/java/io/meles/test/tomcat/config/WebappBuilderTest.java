@@ -16,24 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.meles.test.tomcat.builder;
+package io.meles.test.tomcat.config;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.assertThat;
 
-import javax.servlet.ServletException;
-
-import org.apache.catalina.startup.Tomcat;
 import org.junit.Test;
 
-public class TomcatBuilderTest {
+public class WebappBuilderTest {
 
     @Test
-    public void shouldUsePort() throws ServletException {
-        final Tomcat tomcat = TomcatBuilder
-                .withTomcat()
-                .onPort(9876)
-                .build();
-        assertThat(tomcat.getConnector().getPort(), is(9876));
+    public void shouldUseWebappBase() {
+        final WebappBuilder webappBuilderUnderTest = WebappBuilder.webapp("the/location");
+
+        assertThat(webappBuilderUnderTest, hasProperty("base", equalTo("the/location")));
+    }
+
+    @Test
+    public void shouldUseContextPath() {
+        final WebappBuilder webappBuilderUnderTest = WebappBuilder.webapp("the/location").at("/the/path");
+
+        assertThat(webappBuilderUnderTest, hasProperty("contextPath", equalTo("/the/path")));
     }
 }
