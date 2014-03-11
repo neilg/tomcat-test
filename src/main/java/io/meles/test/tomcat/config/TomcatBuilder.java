@@ -53,6 +53,10 @@ public class TomcatBuilder {
         return onPort(0);
     }
 
+    public int getPort() {
+        return port;
+    }
+
     public TomcatBuilder run(final WebappBuilder webapp) {
         final List<WebappBuilder> newWebapps = new ArrayList<>(webapps);
         newWebapps.add(webapp);

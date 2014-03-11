@@ -18,13 +18,10 @@
 
 package io.meles.test.tomcat;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import javax.servlet.ServletException;
 
 import io.meles.test.tomcat.config.TomcatBuilder;
-import io.meles.test.tomcat.config.WebappBuilder;
+import org.apache.catalina.Globals;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;
@@ -66,17 +63,13 @@ public class TomcatRule implements TestRule {
     private Tomcat startTomcat(final Description description) throws LifecycleException, ServletException {
 
         final Tomcat startingTomcat = tomcatBuilder.build();
-        final int configuredPort = startingTomcat.getConnector().getPort();
-//        final Tomcat startingTomcat = new Tomcat();
-        final String basedir = System.getProperty("java.io.tmpdir") + "/tomcat." + configuredPort + "-" + description.getDisplayName() + "-" + UUID.randomUUID();
-        startingTomcat.setBaseDir(basedir);
-        startingTomcat.setPort(configuredPort);
+        final String displayName = description.getDisplayName().replaceAll("[/\\\\ ]", "_");
+        System.setProperty(Globals.CATALINA_BASE_PROP, System.getProperty("java.io.tmpdir") + "/tomcat-" + displayName + "-" + System.currentTimeMillis());
 
-        startingTomcat.getEngine();
         startingTomcat.start();
         final Connector connector = startingTomcat.getConnector();
         if (connector.getState() != LifecycleState.STARTED) {
-            throw new RuntimeException("failed to start tomcat connector on port " + configuredPort);
+            throw new RuntimeException("failed to start tomcat connector on port " + tomcatBuilder.getPort());
         }
         return startingTomcat;
     }
