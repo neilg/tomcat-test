@@ -18,6 +18,7 @@
 
 package io.meles.test.tomcat;
 
+import static io.meles.test.tomcat.config.TomcatBuilder.withTomcat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -31,7 +32,7 @@ public class TomcatRuleLifecycleTest {
 
     @Test
     public void tomcatIsDestroyedAfterEvaluation() throws Throwable {
-        final TomcatRule ruleUnderTest = new TomcatRule(0);
+        final TomcatRule ruleUnderTest = new TomcatRule(withTomcat().onFreePort());
 
         final Tomcat[] tomcat = new Tomcat[1];
 

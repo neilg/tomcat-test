@@ -18,7 +18,7 @@
 
 package io.meles.test.tomcat;
 
-import static io.meles.test.tomcat.TomcatRule.withTomcat;
+import static io.meles.test.tomcat.config.TomcatBuilder.withTomcat;
 import static io.meles.test.tomcat.config.WebappBuilder.webapp;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -41,9 +41,10 @@ public class TomcatRuleWebappTest {
     public void canRunWebappFromFilesystem() throws Throwable {
 
         final TomcatRule ruleUnderTest =
-                withTomcat()
-                        .run(webapp(VALID_WEBAPP_ROOT).at("/"))
-                        .onFreePort();
+                new TomcatRule(
+                        withTomcat()
+                                .run(webapp(VALID_WEBAPP_ROOT).at("/"))
+                                .onFreePort());
 
         final Statement base = new Statement() {
             @Override
@@ -66,10 +67,10 @@ public class TomcatRuleWebappTest {
     @Test
     public void cannotRunInvalidWebappFromFilesystem() throws Throwable {
 
-        final TomcatRule ruleUnderTest =
+        final TomcatRule ruleUnderTest = new TomcatRule(
                 withTomcat()
                         .run(webapp(INVALID_WEBAPP_ROOT).at("/"))
-                        .onFreePort();
+                        .onFreePort());
 
         final Statement base = new Statement() {
             @Override
@@ -86,10 +87,10 @@ public class TomcatRuleWebappTest {
     @Test
     public void canRunWebappFromWar() throws Throwable {
 
-        final TomcatRule ruleUnderTest =
+        final TomcatRule ruleUnderTest = new TomcatRule(
                 withTomcat()
                         .run(webapp(WAR_WEBAPP_ROOT).at("/"))
-                        .onFreePort();
+                        .onFreePort());
 
         final Statement base = new Statement() {
             @Override

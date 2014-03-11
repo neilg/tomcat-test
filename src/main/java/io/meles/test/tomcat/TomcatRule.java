@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
 
+import io.meles.test.tomcat.config.TomcatBuilder;
 import io.meles.test.tomcat.config.WebappBuilder;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
@@ -34,32 +35,12 @@ import org.junit.runners.model.Statement;
 
 public class TomcatRule implements TestRule {
 
-    public static TomcatRule withTomcat() {
-        return new TomcatRule(0);
-    }
-
-    public TomcatRule run(final WebappBuilder webapp) {
-        webappBuilders.add(webapp);
-        return this;
-    }
-
-    public TomcatRule onFreePort() {
-        return onPort(0);
-    }
-
-    public TomcatRule onPort(final int port) {
-        this.configuredPort = port;
-        return this;
-    }
-
-    private List<WebappBuilder> webappBuilders = new ArrayList<>();
-
-    private int configuredPort;
+    private final TomcatBuilder tomcatBuilder;
 
     private Tomcat tomcat;
 
-    public TomcatRule(int port) {
-        this.configuredPort = port;
+    public TomcatRule(final TomcatBuilder tomcatBuilder) {
+        this.tomcatBuilder = tomcatBuilder;
     }
 
     @Override
@@ -83,14 +64,14 @@ public class TomcatRule implements TestRule {
     }
 
     private Tomcat startTomcat(final Description description) throws LifecycleException, ServletException {
-        final Tomcat startingTomcat = new Tomcat();
+
+        final Tomcat startingTomcat = tomcatBuilder.build();
+        final int configuredPort = startingTomcat.getConnector().getPort();
+//        final Tomcat startingTomcat = new Tomcat();
         final String basedir = System.getProperty("java.io.tmpdir") + "/tomcat." + configuredPort + "-" + description.getDisplayName() + "-" + UUID.randomUUID();
         startingTomcat.setBaseDir(basedir);
         startingTomcat.setPort(configuredPort);
 
-        for (final WebappBuilder webapp : webappBuilders) {
-            startingTomcat.addWebapp(webapp.getContextPath(), webapp.getBase());
-        }
         startingTomcat.getEngine();
         startingTomcat.start();
         final Connector connector = startingTomcat.getConnector();

@@ -49,6 +49,10 @@ public class TomcatBuilder {
         return new TomcatBuilder(port, webapps);
     }
 
+    public TomcatBuilder onFreePort() {
+        return onPort(0);
+    }
+
     public TomcatBuilder run(final WebappBuilder webapp) {
         final List<WebappBuilder> newWebapps = new ArrayList<>(webapps);
         newWebapps.add(webapp);

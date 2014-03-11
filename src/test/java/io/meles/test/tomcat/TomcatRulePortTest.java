@@ -18,6 +18,7 @@
 
 package io.meles.test.tomcat;
 
+import static io.meles.test.tomcat.config.TomcatBuilder.withTomcat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
@@ -30,7 +31,7 @@ public class TomcatRulePortTest {
 
     @Test
     public void canBindToFreePort() throws Throwable {
-        final TomcatRule ruleUnderTest = new TomcatRule(0);
+        final TomcatRule ruleUnderTest = new TomcatRule(withTomcat().onFreePort());
 
         final Statement base = new Statement() {
             @Override
@@ -47,7 +48,7 @@ public class TomcatRulePortTest {
     @Test
     public void bindsToSpecifiedPort() throws Throwable {
         final int portToBind = 7654;
-        final TomcatRule ruleUnderTest = new TomcatRule(portToBind);
+        final TomcatRule ruleUnderTest = new TomcatRule(withTomcat().onPort(portToBind));
 
         final Statement base = new Statement() {
             @Override
