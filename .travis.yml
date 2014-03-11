@@ -1,6 +1,6 @@
 language: java
 
-install:
+install: echo
 script: mvn verify
 
 jdk:
