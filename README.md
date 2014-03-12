@@ -1,4 +1,4 @@
-# Tomcat Test
+# Tomcat Test [![Build Status](https://travis-ci.org/neilg/tomcat-test.png)](https://travis-ci.org/neilg/tomcat-test)
 
 Embed [Tomcat](http://tomcat.apache.org/) in your [JUnit](http://junit.org/) tests.
 

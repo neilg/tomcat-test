@@ -4,5 +4,4 @@ install: echo
 script: mvn verify
 
 jdk:
-- oraclejdk7
 - openjdk7
