@@ -28,9 +28,48 @@
     <artifactId>tomcat-test</artifactId>
     <version>0.1-SNAPSHOT</version>
 
+    <licenses>
+        <license>
+            <name>GPL-3</name>
+            <distribution>repo</distribution>
+            <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+        </license>
+    </licenses>
+
     <prerequisites>
         <maven>3</maven>
     </prerequisites>
+
+    <scm>
+        <connection>scm:git:https://github.com/neilg/tomcat-test.git</connection>
+        <developerConnection>scm:git:git@github.com:neilg/tomcat-test.git</developerConnection>
+        <url>https://github.com/neilg/tomcat-test</url>
+    </scm>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/neilg/tomcat-test/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <developers>
+        <developer>
+            <name>Neil Green</name>
+            <timezone>Europe/London</timezone>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,6 +91,7 @@
         <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
         <maven-site-plugin.version>3.4</maven-site-plugin.version>
         <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+        <jgitflow-maven-plugin.version>1.0-m3</jgitflow-maven-plugin.version>
         <pitest.plugin.version>1.0.0</pitest.plugin.version>
     </properties>
 
@@ -105,6 +145,11 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>external.atlassian.jgitflow</groupId>
+                    <artifactId>jgitflow-maven-plugin</artifactId>
+                    <version>${jgitflow-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.pitest</groupId>
@@ -176,6 +221,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+                <configuration>
+                    <noDeploy>true</noDeploy>
+                    <pushReleases>true</pushReleases>
+                </configuration>
             </plugin>
         </plugins>
     </build>
