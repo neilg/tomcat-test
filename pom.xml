@@ -23,9 +23,10 @@
 
     <groupId>io.meles.testing</groupId>
     <artifactId>tomcat-test</artifactId>
-    <version>0.3</version>
+    <version>0.4</version>
 
     <description>JUnit rule for running tomcat in tests.</description>
+    <url>https://github.com/neilg/tomcat-test</url>
 
     <licenses>
         <license>
