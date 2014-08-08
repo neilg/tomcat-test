@@ -26,6 +26,7 @@
     <version>0.4-SNAPSHOT</version>
 
     <description>JUnit rule for running tomcat in tests.</description>
+    <url>https://github.com/neilg/tomcat-test</url>
 
     <licenses>
         <license>
