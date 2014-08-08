@@ -27,6 +27,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.apache.catalina.Globals;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -36,6 +38,11 @@ public class TomcatRuleWebappTest {
     private static final String VALID_WEBAPP_ROOT = TomcatRuleWebappTest.class.getResource("/valid_webapp").getFile();
     private static final String INVALID_WEBAPP_ROOT = TomcatRuleWebappTest.class.getResource("/webapp_with_invalid_web_xml").getFile();
     private static final String WAR_WEBAPP_ROOT = TomcatRuleWebappTest.class.getResource("/the.war").getFile();
+
+    @Before
+    public void catalinaBase() {
+        System.setProperty(Globals.CATALINA_BASE_PROP, System.getProperty("java.io.tmpdir") + "/tomcat-" + getClass().getName() + "-" + System.currentTimeMillis());
+    }
 
     @Test
     public void canRunWebappFromFilesystem() throws Throwable {

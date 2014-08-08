@@ -23,11 +23,18 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
+import org.apache.catalina.Globals;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 public class TomcatRulePortTest {
+
+    @Before
+    public void catalinaBase() {
+        System.setProperty(Globals.CATALINA_BASE_PROP, System.getProperty("java.io.tmpdir") + "/tomcat-" + getClass().getName() + "-" + System.currentTimeMillis());
+    }
 
     @Test
     public void canBindToFreePort() throws Throwable {

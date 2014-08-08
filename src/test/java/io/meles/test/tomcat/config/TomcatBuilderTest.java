@@ -23,10 +23,17 @@ import static org.junit.Assert.assertThat;
 
 import javax.servlet.ServletException;
 
+import org.apache.catalina.Globals;
 import org.apache.catalina.startup.Tomcat;
+import org.junit.Before;
 import org.junit.Test;
 
 public class TomcatBuilderTest {
+
+    @Before
+    public void catalinaBase() {
+        System.setProperty(Globals.CATALINA_BASE_PROP, System.getProperty("java.io.tmpdir") + "/tomcat-" + getClass().getName() + "-" + System.currentTimeMillis());
+    }
 
     @Test
     public void shouldUsePort() throws ServletException {
