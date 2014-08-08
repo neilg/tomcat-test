@@ -25,6 +25,7 @@
     <artifactId>tomcat-test</artifactId>
     <version>0.5-SNAPSHOT</version>
 
+    <name>${project.artifactId}</name>
     <description>JUnit rule for running tomcat in tests.</description>
     <url>https://github.com/neilg/tomcat-test</url>
 
