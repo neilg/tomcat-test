@@ -23,7 +23,7 @@
 
     <groupId>io.meles.testing</groupId>
     <artifactId>tomcat-test</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.2</version>
 
     <licenses>
         <license>
